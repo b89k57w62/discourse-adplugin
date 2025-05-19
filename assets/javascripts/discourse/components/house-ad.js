@@ -74,24 +74,15 @@ export default class HouseAd extends AdComponent {
 
   chooseAdHtml() {
     const houseAds = this.site.get("house_creatives"),
-      placement = this.get("placement").replace(/-/g, "_"),
-      adNames = this.adsNamesForSlot(placement);
+      placement = this.get("placement"),
+      ad = houseAds.creatives[placement];
 
-    // filter out ads that should not be shown on the current page
-    const filteredAds = adNames.filter((adName) => {
-      const ad = houseAds.creatives[adName];
-      return (
-        ad &&
-        (!ad.category_ids?.length ||
-          ad.category_ids.includes(this.currentCategoryId))
-      );
-    });
-    if (filteredAds.length > 0) {
-      if (!adIndex[placement]) {
-        adIndex[placement] = 0;
-      }
-      let ad = houseAds.creatives[filteredAds[adIndex[placement]]] || "";
-      adIndex[placement] = (adIndex[placement] + 1) % filteredAds.length;
+    // 檢查是否有對應的 creative
+    if (
+      ad &&
+      (!ad.category_ids?.length ||
+        ad.category_ids.includes(this.currentCategoryId))
+    ) {
       return ad.html;
     }
   }
