@@ -77,7 +77,6 @@ export default class HouseAd extends AdComponent {
       placement = this.get("placement"),
       placementUnderscored = placement.replace(/-/g, "_");
 
-    // 如果是topic-list-top位置，合併顯示所有廣告
     if (placement === "topic-list-top" && houseAds.settings[placementUnderscored]) {
       const adNames = houseAds.settings[placementUnderscored].split("|");
       const validAds = adNames.filter(adName => {
@@ -87,11 +86,9 @@ export default class HouseAd extends AdComponent {
       });
 
       if (validAds.length > 0) {
-        // 合併所有廣告HTML
         return validAds.map(adName => houseAds.creatives[adName].html).join("");
       }
     } else {
-      // 其他位置保持原來的邏輯
       const ad = houseAds.creatives[placement];
       if (
         ad &&
