@@ -75,15 +75,31 @@ export default class HouseAd extends AdComponent {
   chooseAdHtml() {
     const houseAds = this.site.get("house_creatives"),
       placement = this.get("placement"),
-      ad = houseAds.creatives[placement];
+      placementUnderscored = placement.replace(/-/g, "_");
 
-    // 檢查是否有對應的 creative
-    if (
-      ad &&
-      (!ad.category_ids?.length ||
-        ad.category_ids.includes(this.currentCategoryId))
-    ) {
-      return ad.html;
+    // 如果是topic-list-top位置，合併顯示所有廣告
+    if (placement === "topic-list-top" && houseAds.settings[placementUnderscored]) {
+      const adNames = houseAds.settings[placementUnderscored].split("|");
+      const validAds = adNames.filter(adName => {
+        const ad = houseAds.creatives[adName];
+        return ad && (!ad.category_ids?.length || 
+          ad.category_ids.includes(this.currentCategoryId));
+      });
+
+      if (validAds.length > 0) {
+        // 合併所有廣告HTML
+        return validAds.map(adName => houseAds.creatives[adName].html).join("");
+      }
+    } else {
+      // 其他位置保持原來的邏輯
+      const ad = houseAds.creatives[placement];
+      if (
+        ad &&
+        (!ad.category_ids?.length ||
+          ad.category_ids.includes(this.currentCategoryId))
+      ) {
+        return ad.html;
+      }
     }
   }
 

@@ -1,5 +1,1 @@
-{{#each (split this.site.house_creatives.settings.topic_list_top "|") as |creative_name|}}
-  {{#if creative_name}}
-    {{ad-slot placement=creative_name}}
-  {{/if}}
-{{/each}}
+{{ad-slot placement="topic-list-top" category=this.category.slug}}
