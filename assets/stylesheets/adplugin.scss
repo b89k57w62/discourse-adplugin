@@ -124,7 +124,7 @@
 }
 
 .house-creative {
-  margin: 0 auto;
+  margin: 0 auto 5px auto;
 }
 
 .house-creative.house-post-bottom {
@@ -299,4 +299,8 @@
 
 .house-ad-preview {
   width: 100%;
+}
+
+.house-creative {
+  margin-bottom: 5px !important;
 }
